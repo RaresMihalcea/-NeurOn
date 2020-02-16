@@ -1,13 +1,13 @@
 import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Component({
-	selector: 'app-matrix',
-	templateUrl: './matrix.component.html',
-	styleUrls: ['./matrix.component.scss']
+	selector: 'app-geometry',
+	templateUrl: './geometry.component.html',
+	styleUrls: ['./geometry.component.scss']
 })
-export class MatrixComponent implements OnInit {
+export class GeometryComponent implements OnInit {
 
 	constructor(private _ngZone: NgZone) {}
 

@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { InputsComponent } from './inputs/inputs.component';
 import { MatButtonModule } from '@angular/material/button';
-import { MatrixComponent } from './matrix/matrix.component';
+import { GeometryComponent } from './geometry/geometry.component';
 import { GraphComponent } from './graph/graph.component';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -17,7 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 	declarations: [
 		AppComponent,
 		InputsComponent,
-		MatrixComponent,
+		GeometryComponent,
 		GraphComponent
 	],
 	imports: [
