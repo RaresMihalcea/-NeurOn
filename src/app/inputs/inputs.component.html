@@ -1,112 +1,116 @@
 <div class='container'>
     <div class='row'>
-        <div class='col'>
-            <div class='row'>
+        <div class='row mx-auto'>
+            <!-- <div class='row'> -->
+                
                 <app-geometry></app-geometry>
-            </div>
-            <div class='row'>
+            <!-- </div> -->
+            <!-- <div class='row'> -->
                 <app-graph></app-graph>
+            <!-- </div> -->
+        </div>
+        <div class='row mx-auto'>
+
+            <div class='col'>
+                <h2>Dentritic Variables</h2>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Diameter</mat-label>
+                        <input type='number' value=2 matInput placeholder="Number">
+                        <mat-hint>a in <span>&#181;</span>m</mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Membrane Capacitance</mat-label>
+                        <input type='number' value=1 matInput placeholder="Number">
+                        <mat-hint>C in <span>&#181;</span>Fcm<sup>-2</sup></mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Passive Membrane Unit Resistance</mat-label>
+                        <input type='number' value=2000 matInput placeholder="Number">
+                        <mat-hint>R in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Specific Cytoplasmic Resistivity</mat-label>
+                        <input type='number' value=100 matInput placeholder="Number">
+                        <mat-hint>R<sub>a</sub> in <span>&#8486;</span>cm</mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Inductance</mat-label>
+                        <input type='number' value=5 matInput placeholder="Number">
+                        <mat-hint>L in Hcm<sup>2</sup></mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Series Resistance</mat-label>
+                        <input type='number' value=1 matInput placeholder="Number">
+                        <mat-hint>r in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
+                    </mat-form-field>
+                </p>
             </div>
-        </div>
-        <div class='col'>
-            <h2>Dentritic Variables</h2>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Diameter</mat-label>
-                    <input type='number' value=2 matInput placeholder="Number">
-                    <mat-hint>a in <span>&#181;</span>m</mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Membrane Capacitance</mat-label>
-                    <input type='number' value=1 matInput placeholder="Number">
-                    <mat-hint>C in <span>&#181;</span>Fcm<sup>-2</sup></mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Passive Membrane Unit Resistance</mat-label>
-                    <input type='number' value=2000 matInput placeholder="Number">
-                    <mat-hint>R in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Specific Cytoplasmic Resistivity</mat-label>
-                    <input type='number' value=100 matInput placeholder="Number">
-                    <mat-hint>R<sub>a</sub> in <span>&#8486;</span>cm</mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Inductance</mat-label>
-                    <input type='number' value=5 matInput placeholder="Number">
-                    <mat-hint>L in Hcm<sup>2</sup></mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Series Resistance</mat-label>
-                    <input type='number' value=1 matInput placeholder="Number">
-                    <mat-hint>r in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
-                </mat-form-field>
-            </p>
-        </div>
-        <div class='col'>
-            <h2>Somatic Variables</h2>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Diameter</mat-label>
-                    <input type='number' value=25 matInput placeholder="Number">
-                    <mat-hint>a<sub>s</sub> in <span>&#181;</span>m</mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Membrane Capacitance</mat-label>
-                    <input type='number' value=1 matInput placeholder="Number">
-                    <mat-hint>C<sub>s</sub> in <span>&#181;</span>Fcm<sup>-2</sup></mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Passive Membrane Unit Resistance</mat-label>
-                    <input type='number' value=2000 matInput placeholder="Number">
-                    <mat-hint>R<sub>s</sub> in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Inductance</mat-label>
-                    <input type='number' value=5 matInput placeholder="Number">
-                    <mat-hint>L<sub>s</sub> in Hcm<sup>2</sup></mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>Series Resistance</mat-label>
-                    <input type='number'value=1 matInput placeholder="Number">
-                    <mat-hint>r<sub>s</sub> in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
-                </mat-form-field>
-            </p>
-        </div>
-        <div class='col'>
-            <h2>Stimulus Parameters</h2>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>&#x3C9;</mat-label>
-                    <input type='number'value=1 matInput placeholder="Number">
-                    <mat-hint>&#x3C9;<sub>chirp</sub></mat-hint>
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="outline">
-                    <mat-label>A</mat-label>
-                    <input type='number'value=0.2 matInput placeholder="Number">
-                    <mat-hint>A<sub>chirp</sub> in nA</mat-hint>
-                </mat-form-field>
-            </p>
+            <div class='col'>
+                <h2>Somatic Variables</h2>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Diameter</mat-label>
+                        <input type='number' value=25 matInput placeholder="Number">
+                        <mat-hint>a<sub>s</sub> in <span>&#181;</span>m</mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Membrane Capacitance</mat-label>
+                        <input type='number' value=1 matInput placeholder="Number">
+                        <mat-hint>C<sub>s</sub> in <span>&#181;</span>Fcm<sup>-2</sup></mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Passive Membrane Unit Resistance</mat-label>
+                        <input type='number' value=2000 matInput placeholder="Number">
+                        <mat-hint>R<sub>s</sub> in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Inductance</mat-label>
+                        <input type='number' value=5 matInput placeholder="Number">
+                        <mat-hint>L<sub>s</sub> in Hcm<sup>2</sup></mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Series Resistance</mat-label>
+                        <input type='number'value=1 matInput placeholder="Number">
+                        <mat-hint>r<sub>s</sub> in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
+                    </mat-form-field>
+                </p>
+            </div>
+            <div class='col'>
+                <h2>Stimulus Parameters</h2>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>&#x3C9;</mat-label>
+                        <input type='number'value=1 matInput placeholder="Number">
+                        <mat-hint>&#x3C9;<sub>chirp</sub></mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>A</mat-label>
+                        <input type='number'value=0.2 matInput placeholder="Number">
+                        <mat-hint>A<sub>chirp</sub> in nA</mat-hint>
+                    </mat-form-field>
+                </p>
+            </div>
         </div>
         <div class='row mx-auto'>
             <button mat-raised-button color="primary" class='btn'>Run in the Frequency Domain</button>

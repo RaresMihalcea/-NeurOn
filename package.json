@@ -30,6 +30,8 @@
     "@types/electron": "^1.6.10",
     "bootstrap": "^4.4.1",
     "electron-is-dev": "^1.1.0",
+    "graphdracula": "^1.3.0",
+    "raphael": "^2.3.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
