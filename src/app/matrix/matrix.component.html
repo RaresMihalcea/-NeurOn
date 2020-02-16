@@ -1,0 +1,21 @@
+<h2>Neuron Geometry</h2>
+<div class='col'>
+    <mat-form-field class='matrix-form'>
+        <mat-label>Neuron Geometry</mat-label>
+        <textarea matInput value="0 50 &#10;50 0" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="30"></textarea>
+    </mat-form-field>
+    <h5>*End each row by pressing enter</h5>
+    <h5>*Matrix must be square</h5>
+    <h5>*To symbolize the presence of a dendrite write its length e.g. 0 0 5</h5>
+    <h5>*Lenghts must not be negative</h5>
+    <h5>*Matrix must be symmetric along diagonal</h5>
+    <h5>*Matrix cannot contain cycles</h5>
+    <mat-form-field>
+        <mat-label>Soma Index</mat-label>
+        <mat-select value=0>
+          <mat-option value=0>0</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" class='btn'>Visualise Matrix</button>
+</div>

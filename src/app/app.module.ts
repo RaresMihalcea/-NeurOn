@@ -8,12 +8,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { InputsComponent } from './inputs/inputs.component';
-import { MatButtonModule } from '@angular/material/button'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatrixComponent } from './matrix/matrix.component';
+import { GraphComponent } from './graph/graph.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		InputsComponent
+		InputsComponent,
+		MatrixComponent,
+		GraphComponent
 	],
 	imports: [
 		BrowserModule,
@@ -21,7 +26,8 @@ import { MatButtonModule } from '@angular/material/button';
 		BrowserAnimationsModule,
 		MatFormFieldModule,
 		MatInputModule,
-		MatButtonModule
+		MatButtonModule,
+		MatSelectModule
 	],
 	providers: [IpcService],
 	bootstrap: [AppComponent]

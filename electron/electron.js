@@ -32,6 +32,7 @@ function createWindow() {
 
     mainWindow.setMenu(null);
     mainWindow.webContents.openDevTools();
+    mainWindow.maximize();
 
     mainWindow.on('closed', () => {
         mainWindow = null

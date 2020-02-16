@@ -1,6 +1,14 @@
 <div class='container'>
     <div class='row'>
         <div class='col'>
+            <div class='row'>
+                <app-matrix></app-matrix>
+            </div>
+            <div class='row'>
+                <app-graph></app-graph>
+            </div>
+        </div>
+        <div class='col'>
             <h2>Dentritic Variables</h2>
             <p>
                 <mat-form-field appearance="outline">
@@ -99,6 +107,8 @@
                     <mat-hint>A<sub>chirp</sub> in nA</mat-hint>
                 </mat-form-field>
             </p>
+        </div>
+        <div class='row mx-auto'>
             <button mat-raised-button color="primary" class='btn'>Run in the Frequency Domain</button>
             <button mat-raised-button color="primary" class='btn'>Run in the Time Domain</button>
         </div>
