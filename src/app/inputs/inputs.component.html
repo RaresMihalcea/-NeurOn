@@ -1,90 +1,121 @@
 <div class='container'>
     <div class='row'>
         <div class='row mx-auto'>
-            <app-geometry></app-geometry>
+            <!-- <app-geometry></app-geometry> -->
+            <div class='col'>
+                <h2>Neuron Geometry</h2>
+                <mat-form-field class='matrix-form'>
+                    <mat-label>Neuron Geometry</mat-label>
+                    <textarea matInput [(ngModel)]="matrixInput" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="30"></textarea>
+                </mat-form-field>
+                <h5>***Each value must be separate by only one space</h5>
+                <h5>*End each row by pressing enter</h5>
+                <h5>*Matrix must be square</h5>
+                <h5>*To symbolize the presence of a dendrite write its length e.g. 0 0 5</h5>
+                <h5>*Lenghts must not be negative</h5>
+                <h5>*Matrix must be symmetric along diagonal</h5>
+                <h5>*Matrix diagonal should only contain 0s</h5>
+                <h5>*Soma must have a path to every node</h5>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Soma Index</mat-label>
+                        <input type='number' [(ngModel)]='somaIndex' matInput placeholder="Number">
+                    </mat-form-field>
+                </p>
+
+                <div *ngIf='errors' class='error'>
+                    Errors occured please check below.
+                </div>
+
+                <div>
+                    <button mat-raised-button color="primary" (click)='visualiseMatrix()' class='btn'>Visualise Neuron</button>
+                </div>
+            </div>
             <app-graph></app-graph>
         </div>
         <div class='row mx-auto'>
-
             <div class='col'>
                 <h2>Dentritic Variables</h2>
+                <!-- <form [formGroup]='dentriticParams'> -->
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Diameter</mat-label>
-                        <input type='number' value=2 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]='a' matInput placeholder="Number">
                         <mat-hint>a in <span>&#181;</span>m</mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Membrane Capacitance</mat-label>
-                        <input type='number' value=1 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]='C' matInput placeholder="Number">
                         <mat-hint>C in <span>&#181;</span>Fcm<sup>-2</sup></mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Passive Membrane Unit Resistance</mat-label>
-                        <input type='number' value=2000 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]='R' matInput placeholder="Number">
                         <mat-hint>R in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Specific Cytoplasmic Resistivity</mat-label>
-                        <input type='number' value=100 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]='Ra' matInput placeholder="Number">
                         <mat-hint>R<sub>a</sub> in <span>&#8486;</span>cm</mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Inductance</mat-label>
-                        <input type='number' value=5 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]='L' matInput placeholder="Number">
                         <mat-hint>L in Hcm<sup>2</sup></mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Series Resistance</mat-label>
-                        <input type='number' value=1 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]='r' matInput placeholder="Number">
                         <mat-hint>r in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
                     </mat-form-field>
                 </p>
+                <!-- </form> -->
             </div>
             <div class='col'>
                 <h2>Somatic Variables</h2>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Diameter</mat-label>
-                        <input type='number' value=25 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]="a_soma" matInput placeholder="Number">
                         <mat-hint>a<sub>s</sub> in <span>&#181;</span>m</mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Membrane Capacitance</mat-label>
-                        <input type='number' value=1 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]="C_soma" matInput placeholder="Number">
                         <mat-hint>C<sub>s</sub> in <span>&#181;</span>Fcm<sup>-2</sup></mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Passive Membrane Unit Resistance</mat-label>
-                        <input type='number' value=2000 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]="R_soma" matInput placeholder="Number">
                         <mat-hint>R<sub>s</sub> in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Inductance</mat-label>
-                        <input type='number' value=5 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]="L_soma" matInput placeholder="Number">
                         <mat-hint>L<sub>s</sub> in Hcm<sup>2</sup></mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Series Resistance</mat-label>
-                        <input type='number'value=1 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]="r_soma" matInput placeholder="Number">
                         <mat-hint>r<sub>s</sub> in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
                     </mat-form-field>
                 </p>
@@ -93,23 +124,42 @@
                 <h2>Stimulus Parameters</h2>
                 <p>
                     <mat-form-field appearance="outline">
-                        <mat-label>&#x3C9;</mat-label>
-                        <input type='number'value=1 matInput placeholder="Number">
+                        <mat-label>Stimulus</mat-label>
+                        <input type='number' [(ngModel)]="omega" matInput placeholder="Number">
                         <mat-hint>&#x3C9;<sub>chirp</sub></mat-hint>
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>A</mat-label>
-                        <input type='number'value=0.2 matInput placeholder="Number">
+                        <input type='number' [(ngModel)]="A" matInput placeholder="Number">
                         <mat-hint>A<sub>chirp</sub> in nA</mat-hint>
                     </mat-form-field>
                 </p>
             </div>
         </div>
         <div class='row mx-auto'>
-            <button mat-raised-button color="primary" class='btn'>Run in the Frequency Domain</button>
-            <button mat-raised-button color="primary" class='btn'>Run in the Time Domain</button>
+            <div class='row mx-auto'>
+                <div class='col' *ngIf='errors'>
+                    <div class='error'>
+                        Please fix all errors before running the code again.
+                    </div>
+                    <div class='error' *ngFor="let err of matrixErrors">
+                        {{err}}
+                    </div>
+                    <div class='error' *ngFor="let err of varErrors">
+                        Invalid input for {{err}}.
+                    </div>
+                </div>
+            </div>
+            <div class='row mx-auto'>
+                <button mat-raised-button color="primary" class='btn' (click)='runAlgo(1)'>
+                    Run in the Frequency Domain
+                </button>
+                <button mat-raised-button color="primary" class='btn' (click)='runAlgo(0)'>
+                    Run in the Time Domain
+                </button>
+            </div>
         </div>
     </div>
 </div>
