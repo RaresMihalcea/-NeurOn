@@ -39,16 +39,19 @@ function createWindow() {
     });
 }
 
-ipcMain.on('test', (event, arg) => {
-    var testPath;
+ipcMain.on('run', (event, arg) => {
+    var runPath;
     if (isDev) {
-        testPath = path.join(__dirname, "../python/dist/test/test.exe");
+        runPath = path.join(__dirname, "../python/dist/test/test.exe");
     }
     else {
-        testPath = path.join(process.resourcesPath, '../python/dist/test/test.exe');
+        runPath = path.join(process.resourcesPath, '../python/dist/test/test.exe');
     }
-    exec(testPath, (error, stdout, stderr) => {
-        mainWindow.webContents.send('testIpc', stdout);
+    exec(runPath, [arg], (error, stdout, stderr) => {
+        console.log(event);
+        console.log(arg);
+        console.log(stdout);
+        // mainWindow.webContents.send('testIpc', stdout);
         if (error) throw error;
     });
 });

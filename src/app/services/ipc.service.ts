@@ -8,6 +8,7 @@ declare var electron: any;
 })
 export class IpcService {
 	private _ipc: IpcRenderer | undefined;
+
 	constructor() {
 		if (window.require) {
 			try {
@@ -20,9 +21,9 @@ export class IpcService {
 		}
 	}
 
-	public send() {
-		this._ipc.on('testIpc', (event, data) => console.log(data))
-		this._ipc.send('test', 'ping');
+	public send(data) {
+		// this._ipc.on('testIpc', (event, data) => console.log(data))
+		this._ipc.send('run', data);
 	}
 
 

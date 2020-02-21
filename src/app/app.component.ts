@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IpcService } from './services/ipc.service';
 
 @Component({
 	selector: 'app-root',
@@ -8,9 +7,5 @@ import { IpcService } from './services/ipc.service';
 })
 export class AppComponent {
 	title = 'NeurOn';
-	constructor(public ipcService: IpcService) {
-		this.ipcService.send()
-	}
-
-
+	constructor() {}
 }

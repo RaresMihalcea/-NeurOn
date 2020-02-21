@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GraphComponent } from '../graph/graph.component';
+import { IpcService } from '../services/ipc.service';
 
 @Component({
 	selector: 'app-inputs',
@@ -42,21 +43,41 @@ export class InputsComponent implements OnInit {
 	varErrors = [];
 	matrixErrors = new Set();
 	
-	constructor() { }
+	constructor(public ipc: IpcService) { }
 	
 	ngOnInit(): void {}
 	
 	runAlgo(frequencyDomainFlag: number): void {
 		this.checkInputs();
 		if(!this.errors) {
-			console.log('run');
 			this.frequencyDomainFlag = frequencyDomainFlag;
 			let data = this.buildData();
+			this.ipc.send(JSON.stringify(data));
 		}
 	}
 
 	buildData(): any {
+		let data = {};
+		data['frequencyDomainFlag'] = this.frequencyDomainFlag;
+		data['a'] = this.a;
+		data['C'] = this.C;
+		data['R'] = this.R;
+		data['Ra'] = this.Ra;
+		data['L'] = this.L;
+		data['r'] = this.r;
 
+		data['a_soma'] = this.a_soma;
+		data['C_soma'] = this.C_soma;
+		data['R_soma'] = this.R_soma;
+		data['L_soma'] = this.L_soma;
+		data['r_soma'] = this.r_soma;
+
+		data['omega'] = this.omega;
+		data['A'] = this.A;
+
+		data['matrix'] = this.matrix;
+
+		return data;
 	}
 
 	buildMatrix(): number[][] {
@@ -93,12 +114,8 @@ export class InputsComponent implements OnInit {
 					this.errors = true;
 				}
 
-				console.log(this.matrix[i][j], this.matrix[j][i]);
-				console.log(this.matrixErrors);
 				if(this.matrix[i][j] != this.matrix[j][i]) {
-					console.log('GHEEEEEEEEEEE')
 					this.matrixErrors.add("Matrix is not symmetric along the diagonal.");
-					console.log(this.matrixErrors);
 					this.errors = true;
 				}
 
@@ -117,7 +134,6 @@ export class InputsComponent implements OnInit {
 		if(!this.errors) {
 			let visitedNodes = this.bfs(this.matrix, this.somaIndex);
 			if(visitedNodes !== this.matrix.length) {
-				console.log(visitedNodes);
 				this.matrixErrors.add("Graph is not connected.");
 				this.errors = true; 
 			}
@@ -135,10 +151,6 @@ export class InputsComponent implements OnInit {
 					if(!visited.has(i)) {
 						queue.push(i);
 					}
-					// if(queue.includes(i)) {
-					// 	this.matrixErrors.add("Graph contains cycles.");
-					// 	this.errors = true; 
-					// }
 				}
 			}
 			visited.add(rowIndex);
@@ -149,7 +161,6 @@ export class InputsComponent implements OnInit {
 
 	visualiseMatrix(): void {
 		this.matrixErrors = new Set();
-		console.log(this.varErrors);
 		if(this.varErrors.length === 0) {
 			this.errors = false;
 		}
