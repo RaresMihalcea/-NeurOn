@@ -23,7 +23,6 @@
                         <input type='number' [(ngModel)]='somaIndex' matInput placeholder="Number">
                     </mat-form-field>
                 </p>
-
                 <div *ngIf='errors' class='error'>
                     Errors occured please check below.
                 </div>
@@ -31,10 +30,55 @@
                 <div>
                     <button mat-raised-button color="primary" (click)='visualiseMatrix()' class='btn'>Visualise Neuron</button>
                 </div>
+
             </div>
             <app-graph></app-graph>
         </div>
         <div class='row mx-auto'>
+            <div class='col'>
+                <h2>Locational Parameters</h2>
+                <div class='col'>
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>X Branch First Node</mat-label>
+                            <input type='number' [(ngModel)]='xFirstNode' matInput placeholder="Number">
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>X Branch Second Node</mat-label>
+                            <input type='number' [(ngModel)]='xSecondNode' matInput placeholder="Number">
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>X Distance</mat-label>
+                            <input type='number' [(ngModel)]='xDistance' matInput placeholder="Number">
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Y Branch First Node</mat-label>
+                            <input type='number' [(ngModel)]='yFirstNode' matInput placeholder="Number">
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Y Branch Second Node</mat-label>
+                            <input type='number' [(ngModel)]='ySecondNode' matInput placeholder="Number">
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Y Distance</mat-label>
+                            <input type='number' [(ngModel)]='yDistance' matInput placeholder="Number">
+                        </mat-form-field>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class='row mx-auto'>
+            
             <div class='col'>
                 <h2>Dentritic Variables</h2>
                 <!-- <form [formGroup]='dentriticParams'> -->

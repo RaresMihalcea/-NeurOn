@@ -10,6 +10,8 @@ const url = require('url');
 const isDev = require('electron-is-dev');
 const exec = require('child_process').execFile;
 
+let lock = 0;
+
 let mainWindow;
 
 function createWindow() {
@@ -40,20 +42,34 @@ function createWindow() {
 }
 
 ipcMain.on('run', (event, arg) => {
-    var runPath;
-    if (isDev) {
-        runPath = path.join(__dirname, "../python/dist/test/test.exe");
+    if(lock === 0) {
+        lock = 1;
+        var runPath;
+        if (isDev) {
+            runPath = path.join(__dirname, "../python/dist/test/test.exe");
+        }
+        else {
+            runPath = path.join(process.resourcesPath, '../python/dist/test/test.exe');
+        }
+        exec(runPath, [arg], (error, stdout, stderr) => {
+            console.log(event);
+            console.log(arg);
+            console.log(stdout);
+    
+            if(stdout.includes('finished')) {
+                lock = 0;
+            }
+
+            if(stderr != []) {
+                lock = 0;
+                console.log(stderr);
+                mainWindow.webContents.send('error', stderr);
+            }
+    
+            // mainWindow.webContents.send('testIpc', stdout);
+            if (error) throw error;
+        });
     }
-    else {
-        runPath = path.join(process.resourcesPath, '../python/dist/test/test.exe');
-    }
-    exec(runPath, [arg], (error, stdout, stderr) => {
-        console.log(event);
-        console.log(arg);
-        console.log(stdout);
-        // mainWindow.webContents.send('testIpc', stdout);
-        if (error) throw error;
-    });
 });
 
 app.on('ready', () => {
