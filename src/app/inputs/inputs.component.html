@@ -28,7 +28,8 @@
                 </div>
 
                 <div>
-                    <button mat-raised-button color="primary" (click)='visualiseMatrix()' class='btn'>Visualise Neuron</button>
+                    <button mat-raised-button color="primary" (click)='visualiseMatrix()' class='btn'>Visualise
+                        Neuron</button>
                 </div>
 
             </div>
@@ -78,7 +79,7 @@
             </div>
         </div>
         <div class='row mx-auto'>
-            
+
             <div class='col'>
                 <h2>Dentritic Variables</h2>
                 <!-- <form [formGroup]='dentriticParams'> -->
@@ -182,28 +183,35 @@
                 </p>
             </div>
         </div>
+    </div>
+    <div class='row mx-auto'>
         <div class='row mx-auto'>
-            <div class='row mx-auto'>
-                <div class='col' *ngIf='errors'>
-                    <div class='error'>
-                        Please fix all errors before running the code again.
-                    </div>
-                    <div class='error' *ngFor="let err of matrixErrors">
-                        {{err}}
-                    </div>
-                    <div class='error' *ngFor="let err of varErrors">
-                        Invalid input for {{err}}.
-                    </div>
+            <div class='col' *ngIf='errors'>
+                <div class='error'>
+                    Please fix all errors before running the code again.
+                </div>
+                <div class='error' *ngFor="let err of matrixErrors">
+                    {{err}}
+                </div>
+                <div class='error' *ngFor="let err of varErrors">
+                    Invalid input for {{err}}.
                 </div>
             </div>
-            <div class='row mx-auto'>
-                <button mat-raised-button color="primary" class='btn' (click)='runAlgo(1)'>
-                    Run in the Frequency Domain
-                </button>
-                <button mat-raised-button color="primary" class='btn' (click)='runAlgo(0)'>
-                    Run in the Time Domain
-                </button>
+            <div class='info' *ngFor="let inf of infoArr">
+                {{inf}}
             </div>
+        </div>
+    </div>
+    <div class='row justify-content-center ' justify-content-center style="width: 800px; margin-left: 200px;">
+        <div class='col'>
+            <button mat-raised-button color="primary" class='btn' (click)='runAlgo(1)'>
+                Run in the Frequency Domain
+            </button>
+        </div>
+        <div class='col'>
+            <button mat-raised-button color="primary" class='btn' (click)='runAlgo(0)'>
+                Run in the Time Domain
+            </button>
         </div>
     </div>
 </div>

@@ -46,21 +46,32 @@ export class InputsComponent implements OnInit {
 	matrix: any = [];
 	somaIndex: number = 0;
 
-	// Error paras
+	// Error params
 	errors: boolean = false;
 	varErrors = [];
 	matrixErrors = new Set();
+
+	// Info params
+	infoArr = [];
 
 	constructor(public ipc: IpcService) { }
 
 	ngOnInit(): void { }
 
 	runAlgo(frequencyDomainFlag: number): void {
-		this.checkInputs();
-		if (!this.errors) {
-			this.frequencyDomainFlag = frequencyDomainFlag;
-			let data = this.buildData();
-			this.ipc.send(JSON.stringify(data));
+		this.infoArr = [];
+		if(this.ipc.isAlreadyRunning == true) {
+			console.log('hello2')
+			this.infoArr.push('Algorithm Already Running');
+			console.log(this.infoArr);
+		}
+		else {
+			this.checkInputs();
+			if (!this.errors) {
+				this.frequencyDomainFlag = frequencyDomainFlag;
+				let data = this.buildData();
+				this.ipc.send(JSON.stringify(data));
+			}
 		}
 	}
 
@@ -214,12 +225,13 @@ export class InputsComponent implements OnInit {
 			this.varErrors.push('Input or Measurement Locations Invalid');
 		}
 		else {
-			if (this.matrix[this.xFirstNode][this.xSecondNode] == 0 ||
-				this.matrix[this.ySecondNode][this.ySecondNode] == 0 ||
+			if (
+				this.matrix[this.xFirstNode][this.xSecondNode] == 0 ||
+				this.matrix[this.yFirstNode][this.ySecondNode] == 0 ||
 				this.matrix[this.xFirstNode][this.xSecondNode] < this.xDistance ||
-				this.matrix[this.xFirstNode][this.xSecondNode] < this.yDistance) {
+				this.matrix[this.yFirstNode][this.ySecondNode] < this.yDistance) {
 				this.errors = true;
-				this.varErrors.push('Input or Measurement Locations Invalid');
+				this.varErrors.push('Input or Measurement Distance Invalid');
 			}
 		}
 	}

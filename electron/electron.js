@@ -52,11 +52,12 @@ ipcMain.on('run', (event, arg) => {
             runPath = path.join(process.resourcesPath, '../python/dist/test/test.exe');
         }
         exec(runPath, [arg], (error, stdout, stderr) => {
-            console.log(event);
-            console.log(arg);
+            // console.log(event);
+            // console.log(arg);
             console.log(stdout);
     
             if(stdout.includes('finished')) {
+                mainWindow.webContents.send('info', 'Algorithm Finished');
                 lock = 0;
             }
 
@@ -69,6 +70,9 @@ ipcMain.on('run', (event, arg) => {
             // mainWindow.webContents.send('testIpc', stdout);
             if (error) throw error;
         });
+    }
+    else {
+        mainWindow.webContents.send('info', "Algorithm is already running");
     }
 });
 
