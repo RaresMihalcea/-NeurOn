@@ -46,10 +46,10 @@ ipcMain.on('run', (event, arg) => {
         lock = 1;
         var runPath;
         if (isDev) {
-            runPath = path.join(__dirname, "../python/dist/test/test.exe");
+            runPath = path.join(__dirname, "../python/dist/main/main.exe");
         }
         else {
-            runPath = path.join(process.resourcesPath, '../python/dist/test/test.exe');
+            runPath = path.join(process.resourcesPath, '../python/dist/main/main.exe');
         }
         exec(runPath, [arg], (error, stdout, stderr) => {
             // console.log(event);
