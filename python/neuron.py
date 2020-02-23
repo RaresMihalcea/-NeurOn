@@ -195,9 +195,8 @@ class Neuron:
         l = dendrite.get_scaled_length().real
         if x.real >= l / 2:
             #TODO need validation
-            print('ENTERING INVALIDATED BRANCH')
-            self.__results[(n1, n2)] -= (self.__f(x) * self.__find_coefficient(n2, dendrite))
-            self.__results[(n2, n1)] -= (self.__f(l - x) * self.__find_coefficient(n1, dendrite))
+            self.__results[(n1, n2)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
+            self.__results[(n2, n1)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
             for i in range(len(self.__results)):
                 if (n1, i) in self.__results and i is not n2:
                     self.__results[(n1, i)] -= (self.__f(x) * self.__find_coefficient(n2, dendrite))
