@@ -14,8 +14,9 @@ class Soma:
     __stimulus = None
     __gamma_soma = None
 
-    def __init__(self):
+    def __init__(self, data):
         super().__init__()
+        self.__assign_vars(data)
         self.__calculate_tau()
         self.__calculate_Cs()
         # self.__calculate_Rs()
@@ -23,6 +24,16 @@ class Soma:
         # self.__calculate_Ls()
         # self.__Ls = self.__soma_inductance
         # print('res_s: {}'.format(self.__soma_resistance))
+
+    def __assign_vars(self, data):
+        self.__soma_diameter = data['a_soma']
+        self.__soma_membrane_capacitance = data['C_soma']
+        self.__soma_passive_membrane_unit_resistance = data['R_soma']
+        self.__soma_resistance = data['r_soma']
+        self.__soma_inductance = data['L_soma']
+        self.__Rs = data['R_soma']
+        self.__Ls = data['L_soma']
+        self.__rs = data['r_soma']
 
     def __calculate_tau(self):
         self.__taus = 1e-3 * self.__soma_membrane_capacitance * self.__soma_passive_membrane_unit_resistance

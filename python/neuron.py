@@ -34,14 +34,14 @@ class Neuron:
     __trips_to_dendrites = {}
     __dendrites_set = {}
 
-    def __init__(self, soma_index, geometry, stimulus):
+    def __init__(self, soma_index, geometry, stimulus, data):
         self.__soma_i = soma_index
         self.__geometry = geometry
         self.__empty_coef_vars()
         # print(format('*' * 10 + 'SOMA-INIT' + '*' * 10))
         # print(self.__coefficients)
         # print('OMEGA: {}'.format(stimulus))
-        self.__soma = Soma()
+        self.__soma = Soma(data)
         self.__soma.stimulate(stimulus)
         # print(format('*' * 30))
         # print()

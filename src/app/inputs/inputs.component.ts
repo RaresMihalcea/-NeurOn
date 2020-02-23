@@ -24,7 +24,7 @@ export class InputsComponent implements OnInit {
 	C_soma: number = 1;
 	R_soma: number = 2000;
 	L_soma: number = 5;
-	r_soma: number = 1;
+	r_soma: number = 0.1;
 
 	// Locational Params
 	xFirstNode = 0;
@@ -95,6 +95,7 @@ export class InputsComponent implements OnInit {
 		data['A'] = this.A;
 
 		data['matrix'] = this.matrix;
+		data['somaIndex'] = this.somaIndex;
 
 		data['xFirstNode'] = this.xFirstNode;
 		data['xSecondNode'] = this.xSecondNode;
@@ -200,6 +201,7 @@ export class InputsComponent implements OnInit {
 		this.errors = false;
 		this.checkMatrix();
 		this.checkLocations();
+		this.checkSoma();
 		this.checkOneInput(this.a, "Diameter");
 		this.checkOneInput(this.C, "Membrane Capacitance");
 		this.checkOneInput(this.R, "Passive Unit Area Resistance");
@@ -233,6 +235,13 @@ export class InputsComponent implements OnInit {
 				this.errors = true;
 				this.varErrors.push('Input or Measurement Distance Invalid');
 			}
+		}
+	}
+
+	checkSoma(): void {
+		if(this.somaIndex < 0 || this.matrix.length <= this.somaIndex) {
+			this.errors = true;
+			this.varErrors.push('Soma Index Invalid')
 		}
 	}
 

@@ -1,7 +1,6 @@
 <div class='container'>
     <div class='row'>
         <div class='row mx-auto'>
-            <!-- <app-geometry></app-geometry> -->
             <div class='col'>
                 <h2>Neuron Geometry</h2>
                 <mat-form-field class='matrix-form'>
@@ -82,7 +81,6 @@
 
             <div class='col'>
                 <h2>Dentritic Variables</h2>
-                <!-- <form [formGroup]='dentriticParams'> -->
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Diameter</mat-label>
@@ -203,7 +201,7 @@
         </div>
     </div>
     <div class='row justify-content-center ' justify-content-center style="width: 800px; margin-left: 200px;">
-        <div class='col'>
+        <div class='col' style="margin-left: 50px;">
             <button mat-raised-button color="primary" class='btn' (click)='runAlgo(1)'>
                 Run in the Frequency Domain
             </button>

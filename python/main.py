@@ -6,8 +6,14 @@ import matplotlib.pyplot as plt
 import scipy.fftpack
 import numpy as np
 import cmath
+import sys
+import json
 
-ilt_flag=1
+print(sys.argv)
+
+data = json.loads(sys.argv[1])
+
+ilt_flag=data['frequencyDomainFlag']
 
 T=5.01
 dt=0.01
@@ -25,20 +31,30 @@ else:
     omegas=omega_list * cmath.sqrt(-1)
 
 green_results = []
-ball_and_stick_dendrite = Dendrite(0, 1, 2, 50)
-ball_and_stick_geometry = [
-    [0, ball_and_stick_dendrite], 
-    [ball_and_stick_dendrite, 0]
-]
-ball_and_stick_soma_index = 0
+
+matrix = data['matrix']
+geometry=[]
+for i in range(len(matrix)):
+    geometry.append([])
+    for j in range(len(matrix[i])):
+        geometry[i].append(0)
+
+for i in range(len(matrix)):
+   for j in range(len(matrix[i])):
+        if (not isinstance(geometry[i][j], Dendrite)) and matrix[i][j] != 0:
+            dendrite = Dendrite(i, j, data['a'], matrix[i][j], data)
+            geometry[i][j] = dendrite
+            geometry[j][i] = dendrite
+
+soma_index = data['somaIndex']
 i=0
 
 for omega in omegas:
-    ball_and_stick = Neuron(ball_and_stick_soma_index, ball_and_stick_geometry, omega)
-    ball_and_stick.stimulate(omega)
-    ball_and_stick.set_measurement_location(0, ball_and_stick_geometry[0][1])
-    ball_and_stick.set_input_location(0, ball_and_stick_geometry[0][1])
-    green_results.append(ball_and_stick.greens_function())
+    neuron = Neuron(soma_index, geometry, omega, data)
+    neuron.stimulate(omega)
+    neuron.set_measurement_location(data['xDistance'], geometry[data['xFirstNode']][data['xSecondNode']])
+    neuron.set_input_location(data['yDistance'], geometry[data['yFirstNode']][data['ySecondNode']])
+    green_results.append(neuron.greens_function())
     i+=1
 
 if ilt_flag == 1: 
@@ -46,12 +62,11 @@ if ilt_flag == 1:
     dt=0.01
     t=np.arange(0, T0, dt)
     M=len(t)
-    #TODO write stimp_amp formula in terms of soma diameter
-    stim_Amp=1.591549430918954e+04
-    stim_current=-0.2
+    stim_Amp=1*1e5/(math.pi*data['a']*data['C'])
+    stim_current=-1 * data['A']
     I=[]
     for i in t:
-        I.append(stim_current*stim_Amp*math.sin(0.003*i**2))
+        I.append(stim_current*stim_Amp*math.sin(data['omega']*i**2))
     Om=len(green_results)
     fft_I=scipy.fftpack.fft(I, Om)
     sol_omega=[]
@@ -73,3 +88,5 @@ else:
     plt.ticklabel_format(axis='y', style='sci', scilimits=(0, 0))
     plt.plot(x, green_results)
     plt.show()
+
+print('finished')

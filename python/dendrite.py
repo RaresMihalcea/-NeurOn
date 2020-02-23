@@ -15,11 +15,12 @@ class Dendrite:
     __ra = None # Dendrite Resistance
     __g_pas = 0
 
-    def __init__(self, n1, n2, diameter, length):
+    def __init__(self, n1, n2, diameter, length, data):
         self.__n1 = n1
         self.__n2 = n2
         self.__diameter = diameter
         self.__physical_length = length
+        self.__assign_vars(data)
         self.__g_pas = 1/self.__passive_membrane_unit_resistance
         # print("gpas: {}".format(self.__g_pas))
         # print('R after scaling: {}'.format(self.__passive_membrane_unit_resistance))
@@ -31,6 +32,14 @@ class Dendrite:
         # print('r: {}'.format(self.__resistance))
 
     ############### Internal Logic ###############
+
+    def __assign_vars(self, data):
+        self.__diameter = data['a']
+        self.__membrane_capacitance = data['C']
+        self.__passive_membrane_unit_resistance = data['R']
+        self.__specific_cytoplasmic_resistivity = data['Ra']
+        self.__inductance = data['L']
+        self.__resistance = data['r']
 
     def __calculate_d(self):
         # self.__constant_D = (self.__diameter / (4 * self.__specific_cytoplasmic_resistivity * self.__membrane_capacitance))

@@ -52,8 +52,7 @@ ipcMain.on('run', (event, arg) => {
             runPath = path.join(process.resourcesPath, '../python/dist/main/main.exe');
         }
         exec(runPath, [arg], (error, stdout, stderr) => {
-            // console.log(event);
-            // console.log(arg);
+            console.log(arg);
             console.log(stdout);
     
             if(stdout.includes('finished')) {
@@ -67,7 +66,6 @@ ipcMain.on('run', (event, arg) => {
                 mainWindow.webContents.send('error', stderr);
             }
     
-            // mainWindow.webContents.send('testIpc', stdout);
             if (error) throw error;
         });
     }
