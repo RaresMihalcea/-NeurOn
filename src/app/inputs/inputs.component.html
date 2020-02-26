@@ -200,14 +200,20 @@
             </div>
         </div>
     </div>
+    <div class='row justify-content-center'>
+        <h2>Outputs</h2>
+        <div style="width: 100%;">
+            {{output}}
+        </div>
+    </div>
     <div class='row justify-content-center ' justify-content-center style="width: 800px; margin-left: 200px;">
         <div class='col' style="margin-left: 50px;">
-            <button mat-raised-button color="primary" class='btn' (click)='runAlgo(1)'>
+            <button mat-raised-button color="primary" class='btn' (click)='runAlgo(0)'>
                 Run in the Frequency Domain
             </button>
         </div>
         <div class='col'>
-            <button mat-raised-button color="primary" class='btn' (click)='runAlgo(0)'>
+            <button mat-raised-button color="primary" class='btn' (click)='runAlgo(1)'>
                 Run in the Time Domain
             </button>
         </div>

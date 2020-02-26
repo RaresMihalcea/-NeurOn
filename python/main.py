@@ -9,7 +9,7 @@ import cmath
 import sys
 import json
 
-print(sys.argv)
+# print(sys.argv)
 
 data = json.loads(sys.argv[1])
 
@@ -49,13 +49,21 @@ for i in range(len(matrix)):
 soma_index = data['somaIndex']
 i=0
 
-for omega in omegas:
-    neuron = Neuron(soma_index, geometry, omega, data)
-    neuron.stimulate(omega)
+for i in range(len(omegas)):
+    if i == 0:
+        neuron = Neuron(soma_index, geometry, omegas[i], data, True)
+    else:
+        neuron = Neuron(soma_index, geometry, omegas[i], data, False)
+    neuron.stimulate(omegas[i])
     neuron.set_measurement_location(data['xDistance'], geometry[data['xFirstNode']][data['xSecondNode']])
     neuron.set_input_location(data['yDistance'], geometry[data['yFirstNode']][data['ySecondNode']])
     green_results.append(neuron.greens_function())
     i+=1
+
+print("Peak Output: {}".format(max(green_results)))
+print("Starting Output: {}".format(green_results[0]))
+print("Convergence Value: {}".format(green_results[-1]))
+
 
 if ilt_flag == 1: 
     T0=500.01

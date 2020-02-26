@@ -54,9 +54,20 @@ export class InputsComponent implements OnInit {
 	// Info params
 	infoArr = [];
 
-	constructor(public ipc: IpcService) { }
+	output;
+	outputSubscription;
+	// ['E:\\Dissertation Angular\\NeurOn\\python\\dist\\main\\main.exe', '{"frequencyDomainFlag":1,"a":2,"C":1,"R":2000,"Ra":100,"L":5,"r":1,"a_soma":25,"C_soma":1,"R_soma":2000,"L_soma":5,"r_soma":0.1,"omega":0.003,"A":0.2,"matrix":[[0,50],[50,0]],"somaIndex":0,"xFirstNode":0,"xSecondNode":1,"xDistance":0,"yFirstNode":0,"ySecondNode":1,"yDistance":0}'] {(0, 1): {(0, 1): '+ f(x) * coef(0 on dendrite_0_1)', (1, 0): '(2 * ps - 1) * f(x_0_1)'}, (1, 0): {(0, 1): '1 * f(x_1_0)', (1, 0): '+ f(L-x) * coef(1 on dendrite_0_1)'}} Peak Output: (0.005116258544378836-0.0001292886118369063j) Starting Output: (0.00029811327748635445+0j) Convergence Value: (1.0259742933767112e-07-4.9901939641445485e-06j) finished
+	constructor(public ipc: IpcService) { 
+		this.outputSubscription = this.ipc.outputEvent.subscribe({
+            next: (data) => {
+				this.output = data;
+            }
+        })
+	}
 
-	ngOnInit(): void { }
+	ngOnInit(): void { 
+		this.output = this.ipc.output;
+	}
 
 	runAlgo(frequencyDomainFlag: number): void {
 		this.infoArr = [];
@@ -110,6 +121,7 @@ export class InputsComponent implements OnInit {
 	buildMatrix(): number[][] {
 		let matrix = [];
 		let linesArr = this.matrixInput.split("\n");
+		console.log(linesArr)
 
 		for (var i = 0; i < linesArr.length; i++) {
 			let line = linesArr[i].split(" ");
@@ -127,7 +139,7 @@ export class InputsComponent implements OnInit {
 
 	checkMatrix(): void {
 		this.matrix = this.buildMatrix();
-
+		// console.log(this.matrix)
 		for (var i = 0; i < this.matrix.length; i++) {
 			for (var j = 0; j < this.matrix[i].length; j++) {
 
@@ -161,8 +173,8 @@ export class InputsComponent implements OnInit {
 		if (!this.errors) {
 			let visitedNodes = this.bfs(this.matrix, this.somaIndex);
 			if (visitedNodes !== this.matrix.length) {
-				this.matrixErrors.add("Graph is not connected.");
-				this.errors = true;
+				// this.matrixErrors.add("Graph is not connected.");
+				// this.errors = true;
 			}
 		}
 	}
@@ -252,6 +264,10 @@ export class InputsComponent implements OnInit {
 			return true;
 		}
 		return false;
+	}
+
+	printData(): void {
+		console.log('hello');
 	}
 
 }

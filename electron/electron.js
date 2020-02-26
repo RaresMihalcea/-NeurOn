@@ -57,6 +57,7 @@ ipcMain.on('run', (event, arg) => {
     
             if(stdout.includes('finished')) {
                 mainWindow.webContents.send('info', 'Algorithm Finished');
+                mainWindow.webContents.send('output', stdout);
                 lock = 0;
             }
 

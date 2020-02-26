@@ -34,10 +34,13 @@ class Neuron:
     __trips_to_dendrites = {}
     __dendrites_set = {}
 
-    def __init__(self, soma_index, geometry, stimulus, data):
+    __output = {}
+
+    def __init__(self, soma_index, geometry, stimulus, data, first_run):
         self.__soma_i = soma_index
         self.__geometry = geometry
         self.__empty_coef_vars()
+        self.first_run = first_run
         # print(format('*' * 10 + 'SOMA-INIT' + '*' * 10))
         # print(self.__coefficients)
         # print('OMEGA: {}'.format(stimulus))
@@ -56,7 +59,7 @@ class Neuron:
                     self.__dendrites.append(self.__geometry[i][j])
         # print(self.__dendrites)
         self.__dendrites_set = set(self.__dendrites)
-        # print(self.__dendrites_set)
+        # print(self.__dendrites_set)4
 
     ############### Internal Logic ###############
 
@@ -95,10 +98,17 @@ class Neuron:
 
         for key in self.__trips_to_dendrites:
             d = {}
+            o = {}
             self.__trips_coef[key] = {}
+            if self.first_run == True:
+                self.__output[key] = {}
             for key_trip in self.__trips_to_dendrites:
                 d[key_trip] = 0
+                if self.first_run == True:
+                    o[key_trip] = ""
             self.__trips_coef[key] = d.copy()
+            if self.first_run == True:
+                self.__output[key] = o.copy()
             
         for i in range(len(self.__geometry)):
             for j in range(len(self.__geometry[i])):
@@ -106,6 +116,8 @@ class Neuron:
                     self.__trips_coef[(i, j)][(i, j)] = -1 
                     if self.__is_terminal_node(i) and not self.__is_soma_node(i):
                         self.__trips_coef[(i, j)][(j, i)] = self.__determine_terminal_coefficient() * self.__f(self.__geometry[i][j].get_scaled_length())
+                        if self.first_run == True:
+                            self.__output[(i, j)][(j, i)] = "1 * f(x_{}_{})".format(i, j)
                         # print('Terminal node detected. Coef: {}'.format(self.__trips_coef[(i, j)][(j, i)]))
 
                     elif self.__is_branching_node(i) and not self.__is_soma_node(i):
@@ -113,11 +125,17 @@ class Neuron:
                             if isinstance(self.__geometry[i][k], Dendrite):
                                 if j == k:
                                     self.__trips_coef[(i, j)][(k, i)] = self.__branching_coeffiecient(self.__geometry[i][k], True) * self.__f(self.__geometry[i][j].get_scaled_length())
+                                    if self.first_run == True:
+                                        self.__output[(i, j)][(k, i)] = "(2 * p_{} - 1) * f(x_{}_{})".format(i, i, j)
                                 else:
                                     self.__trips_coef[(i, j)][(k, i)] = self.__branching_coeffiecient(self.__geometry[i][k], False) * self.__f(self.__geometry[i][j].get_scaled_length())
+                                    if self.first_run == True:
+                                        self.__output[(i, j)][(k, i)] = "(2 * p_{}) * f(x_{}_{})".format(i, i, j)
 
                     elif self.__is_soma_node(i) and self.__is_terminal_node(i):
                         self.__trips_coef[(i, j)][(j, i)] = self.__soma_coefficient(self.__geometry[i][j], True) * self.__f(self.__geometry[i][j].get_scaled_length())
+                        if self.first_run == True:
+                            self.__output[(i, j)][(j, i)] = "(2 * ps - 1) * f(x_{}_{})".format(i, j)
                         # print("Soma node detected. Coef: {}".format(self.__trips_coef[(i, j)][(j, i)]))
 
                     elif self.__is_soma_node(i) and self.__is_branching_node(i):
@@ -125,8 +143,12 @@ class Neuron:
                             if isinstance(self.__geometry[i][k], Dendrite):
                                 if j == k:
                                     self.__trips_coef[(i, j)][(k, i)] = self.__soma_coefficient(self.__geometry[i][k], True) * self.__f(self.__geometry[i][j].get_scaled_length())
+                                    if self.first_run == True:
+                                        self.__output[(i, j)][(k, i)] = "(2 * ps - 1) * f(x_{}_{})".format(i, j)
                                 else:
                                     self.__trips_coef[(i, j)][(k, i)] = self.__soma_coefficient(self.__geometry[i][k], False) * self.__f(self.__geometry[i][j].get_scaled_length())
+                                    if self.first_run == True:
+                                        self.__output[(i, j)][(k, i)] = "(2 * ps) * f(x_{}_{})".format(i, j)
                         
                     else:
                         raise ValueError("Unsupported node type")
@@ -197,26 +219,40 @@ class Neuron:
             #TODO need validation
             self.__results[(n1, n2)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
             self.__results[(n2, n1)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
+            if self.first_run == True:
+                self.__output[(n1, n2)][(n1, n2)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n2, n1, n2)
+                self.__output[(n2, n1)][(n2, n1)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n1, n2)
             for i in range(len(self.__results)):
                 if (n1, i) in self.__results and i is not n2:
                     self.__results[(n1, i)] -= (self.__f(x) * self.__find_coefficient(n2, dendrite))
+                    if self.first_run == True:
+                        self.__output[(n1, i)][(n1, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n2, n1, i)
             for i in range(len(self.__results)):
                 if (n2, i) in self.__results and i is not n1:
                     self.__results[(n2, i)] -= (self.__f(l - x) * self.__find_coefficient(n1, dendrite))
+                    if self.first_run == True:
+                        self.__output[(n2, i)][(n2, i)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n1, n2, i)
             
         else:
             # self.__results[(n1, n2)] -= (self.__f(x) * self.__find_coefficient(n2, dendrite))
             # self.__results[(n2, n1)] -= (self.__f(l - x) * self.__find_coefficient(n1, dendrite))
             self.__results[(n1, n2)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
             self.__results[(n2, n1)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
+            if self.first_run == True:
+                self.__output[(n1, n2)][(n1, n2)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n1, n2)
+                self.__output[(n2, n1)][(n2, n1)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n2, n1, n2)
             # self.__results[(n1, n2)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
             # self.__results[(n2, n1)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
             for i in range(len(self.__results)):
                 if (n1, i) in self.__results and i is not n2:
                     self.__results[(n1, i)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
+                    if self.first_run == True:
+                        self.__output[(n1, i)][(n1, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n2, n1, i)
             for i in range(len(self.__results)):
                 if (n2, i) in self.__results and i is not n1:
                     self.__results[(n2, i)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
+                    if self.first_run == True:
+                        self.__output[(n2, i)][(n2, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n2, i)
         self.__solve_system()
 
     def __scale_measurement_location(self, X, dendrite):
@@ -233,8 +269,8 @@ class Neuron:
     def __branching_coeffiecient(self, dendrite, reflection):
         result = self.__z__branching(dendrite)
         sum = 0
-        for i in range(len(self.__dendrites)):
-            sum += self.__z__branching(self.__dendrites[i])
+        for dendrite in self.__dendrites_set:
+            sum += self.__z__branching(dendrite)
         result = 2 * (result / sum)
         if reflection is True:
             result -= 1
@@ -348,6 +384,8 @@ class Neuron:
         # print("final w omegas: {}".format((self.jy / ((2 * self.__y_branch.get_constant_d()) * 2.061670178918302e+4))))
         # print("final w omegas hardcoded: {}".format(((0.1632833667711 / ((2 * 5.000000000000001e+04) * 0.005477225575052)))))
         # return self.__soma.get_gamma_s()
+        if self.first_run == True:
+            print(self.__output)
         return (self.jy / ((2 * self.__y_branch.get_constant_d()) * self.__y_branch.get_gamma()))
 
     ############### Print Neuron Info ###############
