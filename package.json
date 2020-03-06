@@ -1,75 +1,79 @@
 {
-  "name": "neur-on",
-  "main": "electron/electron.js",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "electron": "electron .",
-    "start-all": "concurrently \"ng serve\"  \"wait-on http://localhost:4200 && electron .\"",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "pack": "build --dir",
-    "dist": "yarn build && build",
-    "postinstall": "electron-builder install-app-deps"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "~9.0.0",
-    "@angular/cdk": "^9.0.0",
-    "@angular/common": "~9.0.0",
-    "@angular/compiler": "~9.0.0",
-    "@angular/core": "~9.0.0",
-    "@angular/forms": "~9.0.0",
-    "@angular/material": "^9.0.0",
-    "@angular/platform-browser": "~9.0.0",
-    "@angular/platform-browser-dynamic": "~9.0.0",
-    "@angular/router": "~9.0.0",
-    "@types/electron": "^1.6.10",
-    "bootstrap": "^4.4.1",
-    "electron-is-dev": "^1.1.0",
-    "graphdracula": "^1.3.0",
-    "raphael": "^2.3.0",
-    "rxjs": "~6.5.4",
-    "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
-  },
-  "build": {
-    "appId": "Neuron",
-    "extraFiles": {
-      "from": "./python",
-      "to": "./python"
-    },
-    "win": {
-      "asar": true,
-      "target": "nsis"
-    }
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.1",
-    "@angular/cli": "~9.0.1",
-    "@angular/compiler-cli": "~9.0.0",
-    "@angular/language-service": "~9.0.0",
-    "@types/jasmine": "~3.5.0",
-    "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^12.11.1",
-    "codelyzer": "^5.1.2",
-    "concurrently": "^5.1.0",
-    "electron": "^8.0.0",
-    "electron-builder": "^22.3.2",
-    "jasmine-core": "~3.5.0",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.3.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~2.1.0",
-    "karma-jasmine": "~2.0.1",
-    "karma-jasmine-html-reporter": "^1.4.2",
-    "protractor": "~5.4.3",
-    "ts-node": "~8.3.0",
-    "tslint": "~5.18.0",
-    "typescript": "~3.7.5",
-    "wait-on": "^4.0.0"
-  }
+	"name": "neur-on",
+	"main": "electron/electron.js",
+	"version": "0.0.0",
+	"scripts": {
+		"ng": "ng",
+		"electron": "electron .",
+		"start-all": "concurrently \"ng serve\"  \"wait-on http://localhost:4200 && electron .\"",
+		"start": "ng serve",
+		"build-ng": "ng build --prod --aot --base-href ./",
+		"test": "ng test",
+		"lint": "ng lint",
+		"e2e": "ng e2e",
+		"pack": "electron-builder --dir",
+		"dist": "npm run build-ng && electron-builder",
+		"postinstall": "electron-builder install-app-deps"
+	},
+	"private": true,
+	"dependencies": {
+		"@angular/animations": "~9.0.0",
+		"@angular/cdk": "^9.0.0",
+		"@angular/common": "~9.0.0",
+		"@angular/compiler": "~9.0.0",
+		"@angular/core": "~9.0.0",
+		"@angular/forms": "~9.0.0",
+		"@angular/material": "^9.0.0",
+		"@angular/platform-browser": "~9.0.0",
+		"@angular/platform-browser-dynamic": "~9.0.0",
+		"@angular/router": "~9.0.0",
+		"@types/electron": "^1.6.10",
+		"bootstrap": "^4.4.1",
+		"electron-is-dev": "^1.1.0",
+		"graphdracula": "^1.3.0",
+		"raphael": "^2.3.0",
+		"rxjs": "~6.5.4",
+		"tslib": "^1.10.0",
+		"zone.js": "~0.10.2"
+	},
+	"build": {
+		"appId": "Neuron",
+		"extraFiles": {
+			"from": "./ng",
+			"to": "./dist"
+		},
+		"extraResources": {
+			"from": "./python/dist/main",
+			"to": "python"
+		},
+		"win": {
+			"asar": true,
+			"target": "nsis"
+		}
+	},
+	"devDependencies": {
+		"@angular-devkit/build-angular": "~0.900.1",
+		"@angular/cli": "~9.0.1",
+		"@angular/compiler-cli": "~9.0.0",
+		"@angular/language-service": "~9.0.0",
+		"@types/jasmine": "~3.5.0",
+		"@types/jasminewd2": "~2.0.3",
+		"@types/node": "^12.11.1",
+		"codelyzer": "^5.1.2",
+		"concurrently": "^5.1.0",
+		"electron": "^8.0.0",
+		"electron-builder": "^22.3.2",
+		"jasmine-core": "~3.5.0",
+		"jasmine-spec-reporter": "~4.2.1",
+		"karma": "~4.3.0",
+		"karma-chrome-launcher": "~3.1.0",
+		"karma-coverage-istanbul-reporter": "~2.1.0",
+		"karma-jasmine": "~2.0.1",
+		"karma-jasmine-html-reporter": "^1.4.2",
+		"protractor": "~5.4.3",
+		"ts-node": "~8.3.0",
+		"tslint": "~5.18.0",
+		"typescript": "~3.7.5",
+		"wait-on": "^4.0.0"
+	}
 }

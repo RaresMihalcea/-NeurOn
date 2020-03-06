@@ -26,7 +26,7 @@ function createWindow() {
     mainWindow.loadURL(
         process.env.ELECTRON_START_URL ||
         url.format({
-            pathname: isDev ? 'http://localhost:4200' : path.join(__dirname, '../build/index.html'),
+            pathname: isDev ? 'http://localhost:4200' : path.join(process.resourcesPath, '../dist/index.html'),
             slashes: isDev ? false : true
         }
         )
@@ -42,31 +42,31 @@ function createWindow() {
 }
 
 ipcMain.on('run', (event, arg) => {
-    if(lock === 0) {
+    if (lock === 0) {
         lock = 1;
         var runPath;
         if (isDev) {
             runPath = path.join(__dirname, "../python/dist/main/main.exe");
         }
         else {
-            runPath = path.join(process.resourcesPath, '../python/dist/main/main.exe');
+            runPath = path.join(process.resourcesPath, '/python/main.exe');
         }
         exec(runPath, [arg], (error, stdout, stderr) => {
             console.log(arg);
             console.log(stdout);
-    
-            if(stdout.includes('finished')) {
+
+            if (stdout.includes('finished')) {
                 mainWindow.webContents.send('info', 'Algorithm Finished');
                 mainWindow.webContents.send('output', stdout);
                 lock = 0;
             }
 
-            if(stderr != []) {
+            if (stderr != []) {
                 lock = 0;
                 console.log(stderr);
                 mainWindow.webContents.send('error', stderr);
             }
-    
+
             if (error) throw error;
         });
     }
