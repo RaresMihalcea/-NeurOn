@@ -276,7 +276,7 @@ class Neuron:
             result -= 1
         return result
 
-    def __soma_coefficient(self, dendrite, reflection):#
+    def __soma_coefficient(self, dendrite, reflection):
         result = self.__z__branching(dendrite)
         # print('z: {}'.format(result))
         sum = self.__z_soma(dendrite)

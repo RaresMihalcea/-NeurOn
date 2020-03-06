@@ -34,9 +34,15 @@ export class InputsComponent implements OnInit {
 	ySecondNode = 1;
 	yDistance = 0;
 
-	// Stimulus Params
+	// Stimulus Params (Chirp)
 	omega: number = 0.003;
 	A: number = 0.2;
+
+	// Stimulus Params (Step)
+	omega_step: number = 0.003;
+	T_total_step: number = 100;
+	T_zero: number = 10;
+	T_end: number = 50;
 
 	// Type of algo
 	frequencyDomainFlag: number;
@@ -56,7 +62,6 @@ export class InputsComponent implements OnInit {
 
 	output;
 	outputSubscription;
-	// ['E:\\Dissertation Angular\\NeurOn\\python\\dist\\main\\main.exe', '{"frequencyDomainFlag":1,"a":2,"C":1,"R":2000,"Ra":100,"L":5,"r":1,"a_soma":25,"C_soma":1,"R_soma":2000,"L_soma":5,"r_soma":0.1,"omega":0.003,"A":0.2,"matrix":[[0,50],[50,0]],"somaIndex":0,"xFirstNode":0,"xSecondNode":1,"xDistance":0,"yFirstNode":0,"ySecondNode":1,"yDistance":0}'] {(0, 1): {(0, 1): '+ f(x) * coef(0 on dendrite_0_1)', (1, 0): '(2 * ps - 1) * f(x_0_1)'}, (1, 0): {(0, 1): '1 * f(x_1_0)', (1, 0): '+ f(L-x) * coef(1 on dendrite_0_1)'}} Peak Output: (0.005116258544378836-0.0001292886118369063j) Starting Output: (0.00029811327748635445+0j) Convergence Value: (1.0259742933767112e-07-4.9901939641445485e-06j) finished
 	constructor(public ipc: IpcService) { 
 		this.outputSubscription = this.ipc.outputEvent.subscribe({
             next: (data) => {
@@ -104,6 +109,11 @@ export class InputsComponent implements OnInit {
 
 		data['omega'] = this.omega;
 		data['A'] = this.A;
+
+		data['omega_step'] = this.omega_step;
+		data['T_total_step'] = this.T_total_step;
+		data['T_zero'] = this.T_zero;
+		data['T_end'] = this.T_end;
 
 		data['matrix'] = this.matrix;
 		data['somaIndex'] = this.somaIndex;
@@ -214,6 +224,7 @@ export class InputsComponent implements OnInit {
 		this.checkMatrix();
 		this.checkLocations();
 		this.checkSoma();
+		this.checkStepInputs();
 		this.checkOneInput(this.a, "Diameter");
 		this.checkOneInput(this.C, "Membrane Capacitance");
 		this.checkOneInput(this.R, "Passive Unit Area Resistance");
@@ -227,6 +238,10 @@ export class InputsComponent implements OnInit {
 		this.checkOneInput(this.r_soma, "Soma Series Resistance");
 		this.checkOneInput(this.omega, "Stimulus");
 		this.checkOneInput(this.A, "A");
+		this.checkOneInput(this.omega_step, "Omega Step");
+		this.checkOneInput(this.T_total_step, "T Total (Step)");
+		this.checkOneInput(this.T_zero, "T0 (Step)");
+		this.checkOneInput(this.T_end, "T end (Step)");
 	}
 
 	checkLocations(): void {
@@ -264,6 +279,14 @@ export class InputsComponent implements OnInit {
 			return true;
 		}
 		return false;
+	}
+
+	checkStepInputs(): void {
+		if(this.T_total_step < this.T_end || this.T_zero > this.T_end || 
+			this.T_total_step < this.T_zero ) {
+				this.errors = true;
+				this.varErrors.push("Invalid Step Function Time Interval");
+			}
 	}
 
 	printData(): void {

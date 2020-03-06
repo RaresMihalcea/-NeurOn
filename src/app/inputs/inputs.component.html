@@ -123,7 +123,6 @@
                         <mat-hint>r in <span>&#8486;</span>cm<sup>2</sup></mat-hint>
                     </mat-form-field>
                 </p>
-                <!-- </form> -->
             </div>
             <div class='col'>
                 <h2>Somatic Variables</h2>
@@ -164,7 +163,7 @@
                 </p>
             </div>
             <div class='col'>
-                <h2>Stimulus Parameters</h2>
+                <h2>Stimulus (Chirp)</h2>
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Stimulus</mat-label>
@@ -177,6 +176,37 @@
                         <mat-label>A</mat-label>
                         <input type='number' [(ngModel)]="A" matInput placeholder="Number">
                         <mat-hint>A<sub>chirp</sub> in nA</mat-hint>
+                    </mat-form-field>
+                </p>
+            </div>
+            <div class='col'>
+                <h2>Stimulus (Step)</h2>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Stimulus</mat-label>
+                        <input type='number' [(ngModel)]="omega_step" matInput placeholder="Number">
+                        <mat-hint>&#x3C9;</mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Total Time</mat-label>
+                        <input type='number' [(ngModel)]="T_total_step" matInput placeholder="Number">
+                        <mat-hint>T in ms</mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Start Time</mat-label>
+                        <input type='number' [(ngModel)]="T_zero" matInput placeholder="Number">
+                        <mat-hint>T<sub>0</sub> in ms</mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>End Time</mat-label>
+                        <input type='number' [(ngModel)]="T_end" matInput placeholder="Number">
+                        <mat-hint>T<sub>end</sub> in ms</mat-hint>
                     </mat-form-field>
                 </p>
             </div>
@@ -207,15 +237,14 @@
         </div>
     </div>
     <div class='row justify-content-center ' justify-content-center style="width: 800px; margin-left: 200px;">
-        <div class='col' style="margin-left: 50px;">
             <button mat-raised-button color="primary" class='btn' (click)='runAlgo(0)'>
                 Run in the Frequency Domain
             </button>
-        </div>
-        <div class='col'>
             <button mat-raised-button color="primary" class='btn' (click)='runAlgo(1)'>
-                Run in the Time Domain
+                Run in the Time Domain (Chirp)
             </button>
-        </div>
+            <button mat-raised-button color="primary" class='btn' (click)='runAlgo(2)'>
+                Run in the Time Domain (Step)
+            </button>
     </div>
 </div>
