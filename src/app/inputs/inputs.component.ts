@@ -39,10 +39,10 @@ export class InputsComponent implements OnInit {
 	A: number = 0.2;
 
 	// Stimulus Params (Step)
-	omega_step: number = 0.003;
-	T_total_step: number = 100;
-	T_zero: number = 10;
-	T_end: number = 50;
+	omega_step: number = 0.2;
+	T_total_step: number = 20;
+	T_zero: number = 0;
+	T_end: number = 1;
 
 	// Type of algo
 	frequencyDomainFlag: number;

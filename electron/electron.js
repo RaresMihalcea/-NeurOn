@@ -42,7 +42,7 @@ function createWindow() {
 }
 
 ipcMain.on('run', (event, arg) => {
-    if (lock === 0) {
+    if (lock == 0) {
         lock = 1;
         var runPath;
         if (isDev) {

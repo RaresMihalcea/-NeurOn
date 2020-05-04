@@ -40,6 +40,8 @@ class Dendrite:
         self.__specific_cytoplasmic_resistivity = data['Ra']
         self.__inductance = data['L']
         self.__resistance = data['r']
+        if data['frequencyDomainFlag'] == 2:
+            self.__resistance = 1000000000000000000
 
     def __calculate_d(self):
         # self.__constant_D = (self.__diameter / (4 * self.__specific_cytoplasmic_resistivity * self.__membrane_capacitance))

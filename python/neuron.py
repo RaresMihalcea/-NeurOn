@@ -41,13 +41,8 @@ class Neuron:
         self.__geometry = geometry
         self.__empty_coef_vars()
         self.first_run = first_run
-        # print(format('*' * 10 + 'SOMA-INIT' + '*' * 10))
-        # print(self.__coefficients)
-        # print('OMEGA: {}'.format(stimulus))
         self.__soma = Soma(data)
         self.__soma.stimulate(stimulus)
-        # print(format('*' * 30))
-        # print()
         self.__init_dendrites()
 
     def __init_dendrites(self):
@@ -55,11 +50,8 @@ class Neuron:
         for i in range(len(self.__geometry)):
             for j in range(len(self.__geometry[i])):
                 if isinstance(self.__geometry[i][j], Dendrite):
-                    # print('YES')
                     self.__dendrites.append(self.__geometry[i][j])
-        # print(self.__dendrites)
         self.__dendrites_set = set(self.__dendrites)
-        # print(self.__dendrites_set)4
 
     ############### Internal Logic ###############
 
@@ -74,18 +66,12 @@ class Neuron:
         self.__trips_coef = {}
         self.__dendrites = list()
         self.__trips_to_dendrites = {}
-        # self.__dendrites_set = {}
 
     def __scale_branches(self, omega):
         for i in self.__dendrites_set:
             i.stimulate(omega)
-        # for i in range(len(self.__geometry)):
-        #     for j in range(len(self.__geometry[i])):
-        #         if isinstance(self.__geometry[i][j], Dendrite):
-        #             self.__geometry[i][j].stimulate(omega)
 
     def __f(self, x):
-        # print("f: {}".format(math.e ** ( -1 * math.fabs(x))))
         return (math.e ** ( -1 * math.fabs(x.real)))
 
     def __construct_trips(self):
@@ -156,21 +142,22 @@ class Neuron:
         self.__trips_to_coef()
         self.__init_results()
 
-    def __find_coefficient(self, node_index, dendrite):
+    def __find_coefficient(self, node_index, dendrite, reflection):
         if self.__is_terminal_node(node_index) and not self.__is_soma_node(node_index):
             return self.__determine_terminal_coefficient()
         elif self.__is_branching_node(node_index) and not self.__is_soma_node(node_index):
-            return self.__branching_coeffiecient(dendrite, True)
+            return self.__branching_coeffiecient(dendrite, reflection)
+        elif self.__is_branching_node(node_index) and self.__is_soma_node(node_index):
+            return self.__soma_coefficient(dendrite, reflection)
         else:
             # print('HEEYYYYYYYYYYYYY')
-            return self.__soma_coefficient(dendrite, True)
+            return self.__soma_coefficient(dendrite, reflection)
             # return 1
 
     def __trips_to_coef(self):
         for key in self.__trips_to_dendrites:
             self.__coefficients.append(list(self.__trips_coef[key].values()))
-        # for key in self.__trips_coef:
-        #     print("{} -> {}".format(key, self.__trips_coef[key]))
+        # print(self.__coefficients[0])
 
     def __init_results(self):
         for key in self.__trips_to_dendrites:
@@ -215,44 +202,44 @@ class Neuron:
         n1 = dendrite.get_first_node()
         n2 = dendrite.get_second_node()
         l = dendrite.get_scaled_length().real
-        if x.real >= l / 2:
+        # if x.real >= l / 2:
             #TODO need validation
-            self.__results[(n1, n2)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
-            self.__results[(n2, n1)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
-            if self.first_run == True:
-                self.__output[(n1, n2)][(n1, n2)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n2, n1, n2)
-                self.__output[(n2, n1)][(n2, n1)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n1, n2)
-            for i in range(len(self.__results)):
-                if (n1, i) in self.__results and i is not n2:
-                    self.__results[(n1, i)] -= (self.__f(x) * self.__find_coefficient(n2, dendrite))
-                    if self.first_run == True:
-                        self.__output[(n1, i)][(n1, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n2, n1, i)
-            for i in range(len(self.__results)):
-                if (n2, i) in self.__results and i is not n1:
-                    self.__results[(n2, i)] -= (self.__f(l - x) * self.__find_coefficient(n1, dendrite))
-                    if self.first_run == True:
-                        self.__output[(n2, i)][(n2, i)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n1, n2, i)
+        self.__results[(n1, n2)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite, True))
+        self.__results[(n2, n1)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite, True))
+        # if self.first_run == True:
+        #     self.__output[(n1, n2)][(n1, n2)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n2, n1, n2)
+        #     self.__output[(n2, n1)][(n2, n1)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n1, n2)
+        for i in range(len(self.__results)):
+            if (n1, i) in self.__results and i is not n2:
+                self.__results[(n1, i)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite, False))
+                # if self.first_run == True:
+                #     self.__output[(n1, i)][(n1, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n2, n1, i)
+        for i in range(len(self.__results)):
+            if (n2, i) in self.__results and i is not n1:
+                self.__results[(n2, i)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite, False))
+                # if self.first_run == True:
+                #     self.__output[(n2, i)][(n2, i)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n1, n2, i)
             
-        else:
-            # self.__results[(n1, n2)] -= (self.__f(x) * self.__find_coefficient(n2, dendrite))
-            # self.__results[(n2, n1)] -= (self.__f(l - x) * self.__find_coefficient(n1, dendrite))
-            self.__results[(n1, n2)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
-            self.__results[(n2, n1)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
-            if self.first_run == True:
-                self.__output[(n1, n2)][(n1, n2)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n1, n2)
-                self.__output[(n2, n1)][(n2, n1)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n2, n1, n2)
-            # self.__results[(n1, n2)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
-            # self.__results[(n2, n1)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
-            for i in range(len(self.__results)):
-                if (n1, i) in self.__results and i is not n2:
-                    self.__results[(n1, i)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
-                    if self.first_run == True:
-                        self.__output[(n1, i)][(n1, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n2, n1, i)
-            for i in range(len(self.__results)):
-                if (n2, i) in self.__results and i is not n1:
-                    self.__results[(n2, i)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
-                    if self.first_run == True:
-                        self.__output[(n2, i)][(n2, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n2, i)
+        # else:
+        #     # self.__results[(n1, n2)] -= (self.__f(x) * self.__find_coefficient(n2, dendrite))
+        #     # self.__results[(n2, n1)] -= (self.__f(l - x) * self.__find_coefficient(n1, dendrite))
+        #     self.__results[(n1, n2)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite, True))
+        #     self.__results[(n2, n1)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite, True))
+        #     # if self.first_run == True:
+        #     #     self.__output[(n1, n2)][(n1, n2)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n1, n2)
+        #     #     self.__output[(n2, n1)][(n2, n1)] += "+ f(L-x) * coef({} on dendrite_{}_{})".format(n2, n1, n2)
+        #     # self.__results[(n1, n2)] -= (self.__f(l - x) * self.__find_coefficient(n2, dendrite))
+        #     # self.__results[(n2, n1)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite))
+        #     for i in range(len(self.__results)):
+        #         if (n1, i) in self.__results and i is not n2:
+        #             self.__results[(i, n1)] -= (self.__f(l) * self.__find_coefficient(n1, dendrite, False))
+        #             # if self.first_run == True:
+        #             #     self.__output[(n1, i)][(n1, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n2, n1, i)
+        #     for i in range(len(self.__results)):
+        #         if (n2, i) in self.__results and i is not n1:
+        #             self.__results[(i, n2)] -= (self.__f(x) * self.__find_coefficient(n1, dendrite, False))
+        #             # if self.first_run == True:
+        #             #     self.__output[(n2, i)][(n2, i)] += "+ f(x) * coef({} on dendrite_{}_{})".format(n1, n2, i)
         self.__solve_system()
 
     def __scale_measurement_location(self, X, dendrite):

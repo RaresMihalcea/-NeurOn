@@ -49,6 +49,8 @@ for i in range(len(matrix)):
 soma_index = data['somaIndex']
 i=0
 
+
+
 if ilt_flag == 0:
     for i in range(len(omegas[0:800])):
         if i == 0:
@@ -76,6 +78,17 @@ print("Peak Output: {}".format(max(green_results)))
 print("Starting Output: {}".format(green_results[0]))
 print("Convergence Value: {}".format(green_results[-1]))
 
+# file1 = open("out.txt","w") 
+
+# out = "["
+# for i in green_results:
+#     out += i
+#     out += ','
+# out += "]"
+
+# file1.write(out)
+
+
 if ilt_flag == 1: 
     T0=500.01
     dt=0.01
@@ -96,24 +109,33 @@ if ilt_flag == 1:
     x=np.linspace(0, T0, M)
     plt.xlabel("Time (mS)")
     plt.ylabel("Voltage (mV)")
+    plt.yticks(np.arange(-12, 12, step=2))
+    plt.xticks(np.arange(0, 500, step=50))
     plt.plot(x, sol)
     plt.show()
 elif ilt_flag == 2:
     T0=data['T_total_step'] + 0.01
     dt=0.01
+    # (t-del>=0).*((del+tR)-t>=0)
+    #  Here del is your start time and del+tR is your end time.
     t=np.arange(0, T0, dt)
     M=len(t)
+    stim_Amp=1*1e5/(math.pi*data['a']*data['C'])
+    # stim_Amp=1.5915e4
+    stim_current=data['omega_step']
+    # stim_current = 0.2
     I=[]
     for i in t:
         if i >= data['T_zero'] and i <= data['T_end']:
-            I.append(data['omega_step'])
+            I.append(stim_current*stim_Amp)
         else:
             I.append(0)
     Om=len(green_results)
-    fft_I=scipy.fftpack.fft(I, Om)
+    # fft_I=scipy.fftpack.hfft(I, Om)
+    fft_I = np.fft.rfft(I, Om)
     sol_omega=[]
-    sol_omega = np.multiply(green_results, fft_I)
-    sol=np.fft.ifft(sol_omega)
+    sol_omega = np.multiply(green_results[0:fft_I.size], fft_I)
+    sol=np.fft.irfft(sol_omega)
     sol=sol.real
     sol=sol[0:M]
     x=np.linspace(0, T0, M)

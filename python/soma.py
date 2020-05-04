@@ -19,6 +19,7 @@ class Soma:
         self.__assign_vars(data)
         self.__calculate_tau()
         self.__calculate_Cs()
+
         # self.__calculate_Rs()
         # self.__calculate_rs()
         # self.__calculate_Ls()
@@ -34,6 +35,8 @@ class Soma:
         self.__Rs = data['R_soma']
         self.__Ls = data['L_soma']
         self.__rs = data['r_soma']
+        if data['frequencyDomainFlag'] == 2:
+            self.__rs = 1000000000000000000
 
     def __calculate_tau(self):
         self.__taus = 1e-3 * self.__soma_membrane_capacitance * self.__soma_passive_membrane_unit_resistance
